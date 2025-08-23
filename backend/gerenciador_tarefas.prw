@@ -9,7 +9,7 @@ gERENSIADOR DE TAREFAS
 /*/
 User Function STOTVST()
 
-	Local oBrowse 	:= Nil
+	Private oBrowse 	:= Nil
 	Private aRotina := MenuDef()
 
 	oBrowse:= FWMBrowse():New()
@@ -22,6 +22,9 @@ User Function STOTVST()
 	oBrowse:AddLegend( "ZZG_SITUAC == '4'", "RED"   , "Cancelada"  )
 
 	oBrowse:SetDescription("Gerenciador de Tarefas")
+
+	oBrowse:DisableDetails() //DESABILITA DETALHES DO BROWSER
+
 	oBrowse:Activate()
 
 Return
@@ -31,23 +34,27 @@ Static Function MenuDef()
 
 	Local aRotina := {}
 
-	ADD OPTION aRotina TITLE "Visualizar" 	 ACTION "VIEWDEF.STOTVST" 	OPERATION 2 ACCESS 0
+	ADD OPTION aRotina TITLE "Pesquisar" 	 ACTION "PesqBrw"         	OPERATION 1 ACCESS 0
+    ADD OPTION aRotina TITLE "Visualizar" 	 ACTION "VIEWDEF.STOTVST" 	OPERATION 2 ACCESS 0
 	ADD OPTION aRotina TITLE "Incluir" 		 ACTION "VIEWDEF.STOTVST" 	OPERATION 3 ACCESS 0
 	ADD OPTION aRotina TITLE "Alterar" 		 ACTION "VIEWDEF.STOTVST" 	OPERATION 4 ACCESS 0
 	ADD OPTION aRotina TITLE "Excluir" 		 ACTION "VIEWDEF.STOTVST" 	OPERATION 5 ACCESS 0
 
-Return ( aRotina )
+Return  aRotina 
 
 Static Function ModelDef()
 
 	Local oModel     := Nil
 	Local oStructZZG := FWFormStruct(1, 'ZZG' )
 	Local oStructZZH := FWFormStruct(1, 'ZZH' )
+
 	Local aZZHRel    := {}
 
 	//Criando o modelo e os relacionamentos
-	oModel := MPFormModel():New('MODELZTASK', /*bPreValidacao*/, { |oModel| PosVal( oModel ) }, /*bCommit*/, /*bCancel*/ )
+	oModel := MPFormModel():New('STOTVSTA', /*bPreValidacao*/, { |oModel| PosVal( oModel ) }, /*bCommit*/, /*bCancel*/ )
+
 	oModel:AddFields('ZZGMASTER',/*cOwner*/,oStructZZG)
+
 	oModel:AddGrid('ZZHDETAIL','ZZGMASTER',oStructZZH)
 
 	//Fazendo o relacionamento entre o Pai e Filho
@@ -55,9 +62,10 @@ Static Function ModelDef()
 	aadd(aZZHRel, {'ZZH_CODTAR' , 'ZZG_CODIGO'})
 
 	oModel:SetRelation('ZZHDETAIL', aZZHRel, ZZH->(IndexKey(1)))
-	oModel:SetPrimaryKey({ 'ZZG_FILIAL' , 'ZZG_CODIGO' })
+    
+	oModel:SetPrimaryKey({ 'ZZG_FILIAL+ZZG_CODIGO' })
 
-	// Validações
+	// 
 	oModel:SetVldActivate( { |oModel| PreVal( oModel ) } )
 
 	//Setando as descrições
@@ -65,7 +73,7 @@ Static Function ModelDef()
 	oModel:GetModel('ZZGMASTER'):SetDescription('Tarefa')
 	oModel:GetModel('ZZHDETAIL'):SetDescription('Subtarefas')
 
-Return ( oModel )
+Return oModel 
 
 
 Static Function ViewDef()
