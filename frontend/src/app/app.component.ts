@@ -10,7 +10,6 @@ import {
   PoMenuModule,
   PoPageModule,
   PoToolbarModule,
-  PoButtonModule,
 } from '@po-ui/ng-components';
 
 @Component({
