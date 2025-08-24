@@ -51,7 +51,7 @@ Static Function ModelDef()
 	Local aZZHRel    := {}
 
 	//Criando o modelo e os relacionamentos
-	oModel := MPFormModel():New('STOTVSTA', /*bPreValidacao*/, { |oModel| PosVal( oModel ) }, /*bCommit*/, /*bCancel*/ )
+	oModel := MPFormModel():New('ZZGMASTER', /*bPreValidacao*/, { |oModel| PosVal( oModel ) }, /*bCommit*/, /*bCancel*/ )
 
 	oModel:AddFields('ZZGMASTER',/*cOwner*/,oStructZZG)
 
