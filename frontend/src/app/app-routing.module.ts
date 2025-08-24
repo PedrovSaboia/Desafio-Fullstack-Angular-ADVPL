@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AboutComponent } from './components/about/about.component';
+import { ViewComponent } from './components/view/view.component';
 
-const routes: Routes = [];
+ export const routes: Routes = [
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
+  {path: 'about',      title: 'Sobre o Projeto',     component: AboutComponent},
+  {path: 'view',       title: 'Visualização do Cadastro',  component: ViewComponent}
+    // Definindo as telas 
+
+
+];
+
+

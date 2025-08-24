@@ -1,13 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { ProtheusLibCoreModule } from '@totvs/protheus-lib-core';
+import { ProAppConfigService } from '@totvs/protheus-lib-core'
 
 import {
   PoMenuItem,
   PoMenuModule,
   PoPageModule,
   PoToolbarModule,
+  PoButtonModule,
 } from '@po-ui/ng-components';
 
 @Component({
@@ -17,19 +20,30 @@ import {
     CommonModule,
     RouterOutlet,
     PoToolbarModule,
+    ProtheusLibCoreModule,
     PoMenuModule,
     PoPageModule,
     HttpClientModule,
+    PoButtonModule,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  readonly menus: Array<PoMenuItem> = [
-    { label: 'Home', action: this.onClick.bind(this) },
-  ];
+//Ao carregar a página
+  constructor(private proAppConfigService: ProAppConfigService, private router: Router) {
+    if (! this.proAppConfigService.insideProtheus()) {
+      this.proAppConfigService.loadAppConfig();
+      sessionStorage.setItem("insideProtheus", "0");
+      sessionStorage.setItem("ERPTOKEN", '{"access_token": " " : false}');
+    }
+    else {
+      sessionStorage.setItem("insideProtheus", "1");
+    }
+    
+  }  
 
-  private onClick() {
-    alert('Clicked in menu item');
-  }
+
+
+  
 }

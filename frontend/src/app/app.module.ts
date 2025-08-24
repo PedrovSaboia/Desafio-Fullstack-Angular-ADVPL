@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { PoModule } from "@po-ui/ng-components";
 import { PoTemplatesModule } from "@po-ui/ng-templates";
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CadastroComponent } from './cadastro/cadastro.component';
+import { AboutComponent } from './components/about/about.component';
+import { ViewComponent } from './components/view/view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CadastroComponent
+    AboutComponent,
+    ViewComponent,
+    
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     PoModule,
     PoTemplatesModule
     
