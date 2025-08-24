@@ -11,6 +11,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
    
     provideHttpClient(),
+    { provide: "Window", useValue: window },
     importProvidersFrom([BrowserAnimationsModule, PoHttpRequestModule]),
   ],
   
